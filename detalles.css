@@ -1,0 +1,64 @@
+body {
+    background: linear-gradient(to bottom, #1a1a1a, #2b0f0f, #3e1818);
+    color: #fff;
+}
+
+p {
+    color: white;
+}
+.card, .movie-detail, .comment-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 8px;
+}
+
+.movie-detail {
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.comment-card {
+    margin-bottom: 20px;
+}
+
+.stars-container {
+    font-size: 30px;
+    color: #ddd;
+}
+
+.star {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    width: 2rem;
+    text-align: center;
+}
+
+.star.selected, .star:hover {
+    color: gold;
+}
+
+
+.comment-card small {
+    color: #ccc !important; /* Para asegurar que la fecha de publicación se vea */
+}
+
+.comment-actions button {
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.no-auth-message {
+margin-top: 20px;  /* Espacio arriba */
+margin-bottom: 20px; /* Espacio abajo */
+padding: 10px; /* Espaciado interno */
+text-align: center; /* Centrar el texto */
+background-color: #222; /* Color de fondo opcional */
+color: white; /* Color del texto */
+border-radius: 5px; /* Bordes redondeados */
+}
