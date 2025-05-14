@@ -41,22 +41,21 @@ header("Access-Control-Allow-Headers: Content-Type");
                     <label for="comentario" class="form-label text-white">Añadir un comentario</label>
                     <textarea class="form-control" id="comentario" rows="3" required></textarea>
                 </div>
-                <!-- Antes era tu <div id="rating" class="stars-container">…</div> -->
-<div class="mb-3">
-  <label class="form-label text-white">Calificación:</label>
-  <div id="rating" class="star-rating">
-    <input type="radio" id="star5" name="rating" value="5">
-    <label for="star5" class="bi bi-star-fill"></label>
-    <input type="radio" id="star4" name="rating" value="4">
-    <label for="star4" class="bi bi-star-fill"></label>
-    <input type="radio" id="star3" name="rating" value="3">
-    <label for="star3" class="bi bi-star-fill"></label>
-    <input type="radio" id="star2" name="rating" value="2">
-    <label for="star2" class="bi bi-star-fill"></label>
-    <input type="radio" id="star1" name="rating" value="1">
-    <label for="star1" class="bi bi-star-fill"></label>
-  </div>
-</div>
+            <div class="mb-3">
+            <label class="form-label text-white">Calificación:</label>
+            <div id="rating" class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5">
+                <label for="star5" class="bi bi-star-fill"></label>
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4" class="bi bi-star-fill"></label>
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" class="bi bi-star-fill"></label>
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2" class="bi bi-star-fill"></label>
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1" class="bi bi-star-fill"></label>
+            </div>
+            </div>
 
                 <button id="btn-enviar" type="submit" class="btn btn-primary">Enviar comentario</button>
                 </form>
