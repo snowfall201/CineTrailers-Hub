@@ -35,7 +35,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <h2 class="text-white">${data.titulo}</h2>
                                 <p class="text-white">${data.sinopsis}</p>
                                 <p class="text-white"><strong>Fecha de lanzamiento:</strong> ${data.fecha_lanzamiento}</p>
-                                <p class="text-white"><strong>Calificación:</strong> <span id="calificacion">Cargando...</span></p>
+                                <p class="text-white">
+                                <strong>Calificación:</strong>
+                                <span id="calificacion-estrellas" class="me-2 stars-rtl"></span>
+                                <span id="calificacion-promedio"></span>
+                                </p>
                             </div>
                         </div>`;
                     
@@ -58,57 +62,66 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(response => response.text())
                 .then(text => {
                     console.log("Respuesta del servidor:", text); 
-        
+
                     let comentarios;
                     try {
                         comentarios = JSON.parse(text);
                     } catch (error) {
                         throw new Error("La respuesta no es JSON válido");
                     }
-        
+
                     if (comentarios.error) {
                         throw new Error(comentarios.error); 
                     }
-        
+
                     const container = document.getElementById('comentarios-container');
                     container.innerHTML = '';
-        
+
                     if (comentarios.length === 0) {
                         container.innerHTML = "<p class='text-warning'>No hay comentarios aún.</p>";
                         return;
                     }
-        
-                    let totalPuntos = 0;
-                    comentarios.forEach(comentario => totalPuntos += comentario.puntuacion);
-                    let promedio = (comentarios.length > 0) ? (totalPuntos / comentarios.length).toFixed(1) : "N/A";
-                    let estrellasPromedio = "⭐".repeat(Math.round(promedio)) + "☆".repeat(5 - Math.round(promedio));
-                    document.getElementById("calificacion").innerHTML = `${estrellasPromedio} (${promedio})`;
-        
+
+                    let totalPuntos = comentarios.reduce((sum, c) => sum + parseInt(c.puntuacion), 0);
+                    let promedio = (totalPuntos / comentarios.length).toFixed(1);
+                    document.getElementById("calificacion-promedio").textContent = `(${promedio})`;
+
+                    const promedioContainer = document.getElementById("calificacion-estrellas");
+                    promedioContainer.innerHTML = "";
+                    for (let i = 1; i <= 5; i++) {
+                        const star = document.createElement("i");
+                        star.className = i <= Math.round(promedio) ? "bi bi-star-fill text-warning" : "bi bi-star text-secondary";
+                        star.style.fontSize = "1.2rem";
+                        promedioContainer.appendChild(star);
+                    }
+
                     fetch(`api/auth.php`)
                         .then(response => response.json())
                         .then(userData => {
-                            const userId = userData.userId; 
-                            const userName = userData.name; 
+                            const userName = userData.name;
 
                             comentarios.forEach(comentario => {
-                                let estrellas = "⭐".repeat(comentario.puntuacion) + "☆".repeat(5 - comentario.puntuacion);
-                                
+                                let estrellasHTML = "";
+                                for (let i = 1; i <= 5; i++) {
+                                    estrellasHTML += `<i class="${i <= comentario.puntuacion ? 'bi bi-star-fill text-warning' : 'bi bi-star text-secondary'} me-1"></i>`;
+                                }
+
                                 let botones = "";
                                 if (userName === comentario.usuario) { 
                                     botones = `
-                                    <button class="btn btn-sm btn-primary" onclick="editarComentario(${comentario.id}, '${comentario.comentario}', ${comentario.puntuacion})">✏️ Editar</button>
-                                    <button class="btn btn-sm btn-danger" onclick="eliminarComentario(${comentario.id}, ${id})">🗑 Eliminar</button>
-                                `;
+                                        <button class="btn btn-sm btn-primary" onclick="editarComentario(${comentario.id}, '${comentario.comentario}', ${comentario.puntuacion})">✏️ Editar</button>
+                                        <button class="btn btn-sm btn-danger" onclick="eliminarComentario(${comentario.id}, ${id})">🗑 Eliminar</button>
+                                    `;
                                 }
-        
+
                                 container.innerHTML += `
                                     <div class="card comment-card">
                                         <div class="card-body">
                                             <h6 class="text-info">${comentario.usuario}</h6>
                                             <p id="comentario-texto-${comentario.id}">${comentario.comentario}</p>
-                                            <p class="text-warning" id="comentario-estrellas-${comentario.id}">${estrellas}</p>
+                                            <div class="mb-2 stars-rtl" id="comentario-estrellas-${comentario.id}">${estrellasHTML}</div>
                                             <small class="text-muted">Publicado el ${new Date(comentario.fecha).toLocaleDateString()}</small>
-                                            <div>${botones}</div> <!-- Los botones Editar y Eliminar se mostrarán aquí -->
+                                            <div>${botones}</div>
                                         </div>
                                     </div>`;
                             });
@@ -118,14 +131,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 .catch(error => console.error("Error al cargar los comentarios:", error));
         }
 
+
         function enviarComentario(id) {
             const comentario = document.getElementById("comentario").value.trim();
-            const puntuacion = document.getElementById("puntuacion").value;
+            const seleccion = document.querySelector('input[name="rating"]:checked');
+            const puntuacion = seleccion ? seleccion.value : 0;
+
             const botonEnviar = document.getElementById("btn-enviar");
         
             if (!comentario || puntuacion < 1 || puntuacion > 5) {
-                alert("Escribe un comentario y selecciona una calificación válida.");
-                return;
+                return alert("Comentario y calificación obligatorios (1–5).");
             }
         
             botonEnviar.disabled = true; 
@@ -163,40 +178,57 @@ document.addEventListener("DOMContentLoaded", function () {
             enviarComentario(id);
         }
         
-        function editarComentario(comentarioId, comentarioTexto, puntuacion) {
-            document.getElementById(`comentario-texto-${comentarioId}`).innerHTML = 
-                `<textarea id="nuevo-comentario-${comentarioId}" class="form-control">${comentarioTexto}</textarea>`;
-        
-            document.getElementById(`comentario-estrellas-${comentarioId}`).innerHTML = `
-                <select id="nueva-puntuacion-${comentarioId}" class="form-control">
-                    <option value="1" ${puntuacion == 1 ? "selected" : ""}>⭐ 1</option>
-                    <option value="2" ${puntuacion == 2 ? "selected" : ""}>⭐⭐ 2</option>
-                    <option value="3" ${puntuacion == 3 ? "selected" : ""}>⭐⭐⭐ 3</option>
-                    <option value="4" ${puntuacion == 4 ? "selected" : ""}>⭐⭐⭐⭐ 4</option>
-                    <option value="5" ${puntuacion == 5 ? "selected" : ""}>⭐⭐⭐⭐⭐ 5</option>
-                </select>`;
-        
-            document.getElementById(`comentario-texto-${comentarioId}`).insertAdjacentHTML(
-                'afterend', `<button class="btn btn-sm btn-success mt-2" onclick="guardarEdicion(${comentarioId})">💾 Guardar</button>`
-            );
-        }
+       function editarComentario(comentarioId, comentarioTexto, puntuacion) {
+        document.getElementById(`comentario-texto-${comentarioId}`).innerHTML = `
+            <textarea id="nuevo-comentario-${comentarioId}" class="form-control mb-2">${comentarioTexto}</textarea>`;
 
-        function guardarEdicion(comentarioId) {
-            const nuevoComentario = document.getElementById(`nuevo-comentario-${comentarioId}`).value.trim();
-            const nuevaPuntuacion = document.getElementById(`nueva-puntuacion-${comentarioId}`).value;
-        
-            fetch("api/comentarios.php", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ comentario_id: comentarioId, comentario: nuevoComentario, puntuacion: nuevaPuntuacion })
-            })
-            .then(response => response.json())
-            .then(() => {
-                const urlParams = new URLSearchParams(window.location.search);
-                cargarComentarios(urlParams.get('id'));
-            })
-            .catch(error => console.error("Error al editar comentario:", error));
+        let estrellasHTML = `<div class="star-edit stars-rtl mb-2" id="edit-stars-${comentarioId}">`;
+        for (let i = 5; i >= 1; i--) {
+            estrellasHTML += `
+                <input type="radio" id="edit-star-${i}-${comentarioId}" name="edit-rating-${comentarioId}" value="${i}" ${puntuacion == i ? "checked" : ""} hidden>
+                <label for="edit-star-${i}-${comentarioId}" class="bi bi-star-fill" style="font-size: 1.2rem; color: ${i <= puntuacion ? '#ffc107' : '#ccc'}; cursor: pointer;"></label>
+            `;
         }
+        estrellasHTML += `</div>`;
+
+        document.getElementById(`comentario-estrellas-${comentarioId}`).innerHTML = estrellasHTML;
+
+        document.getElementById(`comentario-texto-${comentarioId}`).insertAdjacentHTML(
+            'afterend',
+            `<button class="btn btn-sm btn-success" onclick="guardarEdicion(${comentarioId})">💾 Guardar</button>`
+        );
+
+        const labels = document.querySelectorAll(`#edit-stars-${comentarioId} label`);
+        labels.forEach(label => {
+            label.addEventListener("click", () => {
+                const val = parseInt(label.getAttribute("for").split("-")[2]);
+                labels.forEach(l => {
+                    const i = parseInt(l.getAttribute("for").split("-")[2]);
+                    l.style.color = i <= val ? "#ffc107" : "#ccc";
+                });
+            });
+        });
+    }
+
+
+       function guardarEdicion(comentarioId) {
+        const nuevoComentario = document.getElementById(`nuevo-comentario-${comentarioId}`).value.trim();
+        const seleccion = document.querySelector(`input[name="edit-rating-${comentarioId}"]:checked`);
+        const nuevaPuntuacion = seleccion ? seleccion.value : 0;
+
+        fetch("api/comentarios.php", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ comentario_id: comentarioId, comentario: nuevoComentario, puntuacion: nuevaPuntuacion })
+        })
+        .then(response => response.json())
+        .then(() => {
+            const urlParams = new URLSearchParams(window.location.search);
+            cargarComentarios(urlParams.get('id'));
+        })
+        .catch(error => console.error("Error al editar comentario:", error));
+    }
+
          
         function eliminarComentario(comentarioId, movieId) {
             if (!confirm("¿Seguro que deseas eliminar este comentario?")) return;
@@ -214,35 +246,12 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("Error al eliminar comentario:", error));
         }
 
-    function configurarEstrellas() {
-        const estrellas = document.querySelectorAll("#rating .star");
-        const puntuacionInput = document.getElementById("puntuacion");
-        let estaSeleccionado = false;
-
-        estrellas.forEach(star => {
-            star.addEventListener("mouseover", () => {
-                if (!estaSeleccionado) { 
-                    actualizarEstrellas(star.dataset.value);
-                }
-            });
-            
-            star.addEventListener("mouseout", () => {
-                if (!estaSeleccionado) { 
-                    actualizarEstrellas(puntuacionInput.value); 
-                }
-            });
-            
-            star.addEventListener("click", () => {
-                puntuacionInput.value = star.dataset.value;
-                actualizarEstrellas(star.dataset.value);
-                estaSeleccionado = true; 
-            });
-        });
-
-        function actualizarEstrellas(valor) {
-            estrellas.forEach(star => {
-                star.textContent = star.dataset.value <= valor ? "⭐" : "☆";
-            });
-        }
-    }
-
+function configurarEstrellas() {
+  const estrellas = document.querySelectorAll('#rating label');
+  estrellas.forEach(label => {
+    label.addEventListener('click', () => {
+      label.style.transform = 'scale(1.2)';
+      setTimeout(() => label.style.transform = 'scale(1)', 200);
+    });
+  });
+}
