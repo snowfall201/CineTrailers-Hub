@@ -9,3 +9,4 @@ node_modules/
 config.php
 api/google-login.php
 api/google-callback.php
+echo ".env" >> .gitignore
