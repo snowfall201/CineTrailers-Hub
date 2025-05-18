@@ -1,0 +1,11 @@
+/vendor/
+.env
+*.log
+composer.lock
+.DS_Store
+node_modules/
+.idea/
+*.sqlite
+config.php
+api/google-login.php
+api/google-callback.php

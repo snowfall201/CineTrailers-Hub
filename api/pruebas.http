@@ -1,0 +1,43 @@
+
+###  Obtener películas  
+GET http://localhost:8000/api/peliculas.php
+
+Content-Type: application/json
+Accept: application/json
+
+###  Iniciar Sesión 
+POST http://localhost:8000/api/login.php
+Content-Type: application/json
+
+{
+    "email": "leo@gmail.com",
+    "password": "123"
+}
+
+### Agregar un Comentario 
+POST http://localhost:8000/api/comentarios.php
+Content-Type: application/json
+
+{
+    "pelicula_id": 4,
+    "comentario": "¡Película excelente!",
+    "puntuacion": 3
+}
+
+### Actualizar un comentario 
+PUT http://localhost:8000/api/comentarios.php
+Content-Type: application/json
+
+{
+    "id": 1,
+    "comentario": "Cambié mi opinión, ahora me gusta más",
+    "puntuacion": 5
+}
+
+### Eliminar un comentario
+DELETE http://localhost:8000/api/comentarios.php
+Content-Type: application/json
+
+{
+    "id": 1
+}

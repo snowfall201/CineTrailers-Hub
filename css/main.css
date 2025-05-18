@@ -1,0 +1,59 @@
+       /* 🔧 Ajustes en el body */
+       body {
+        background: linear-gradient(to bottom, #1a1a1a, #2b0f0f, #3e1818);
+        color: #fff;
+        margin: 0;  /* Quitamos el margen */
+        overflow-x: hidden;  /* Evitamos scroll horizontal */
+    }
+
+    .navbar {
+        background: rgba(34, 34, 34, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 5px solid rgba(255, 118, 117, 0.3);
+    }
+
+    /* 🎬 Hero ocupa toda la pantalla */
+    .hero-section {
+        position: relative;
+        text-align: center;
+        color: #fff;
+        min-height:81vh;  /* 🔥 Toda la pantalla */
+        background: url('../img/hero.jpg') center center/cover no-repeat;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(10px);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 3em;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .hero-content p {
+        font-size: 1.2em;
+    }
+
+    footer {
+        background: rgba(34, 34, 34, 0.9);
+        color: #aaa;
+        text-align: center;
+        padding: 20px;
+        font-size: 0.9em;
+    }
