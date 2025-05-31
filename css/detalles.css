@@ -1,19 +1,57 @@
-body {
-    background: linear-gradient(to bottom, #1a1a1a, #2b0f0f, #3e1818);
+/* Fondo degradado de reserva */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: linear-gradient(to bottom, #000000, #110404, #252323);
     color: #fff;
+    font-family: Arial, sans-serif;
+    position: relative;
+    z-index: 1;
 }
 
+/* Video de fondo */
+.hero-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none; /* evita que interfiera con el scroll o clics */
+}
+
+.hero-video {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover;
+    opacity: 1.10; 
+    filter: brightness(60%);
+}
+
+/* Contenedor de contenido encima del video */
+.container {
+    position: relative;
+    z-index: 10;
+}
+
+/* Cartas, detalles, comentarios */
+.card, .movie-detail, .comment-card, #comentario-form, .no-auth-message {
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(19, 5, 5, 0);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    padding: 20px;
+    color: white;
+}
+
+/* Otros estilos existentes */
 p {
     color: white;
 }
-.card, .movie-detail, .comment-card {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 8px;
-}
 
 .movie-detail {
-    padding: 20px;
     margin-bottom: 30px;
 }
 
@@ -34,18 +72,38 @@ p {
     text-align: center;
 }
 
-.star.selected, .star:hover {
+.stars-rtl {
+    direction: unset;
+    unicode-bidi: bidi-override;
+}
+
+.star.selected,
+.star:hover {
     color: gold;
 }
 
-
-.comment-card small {
-    color: #ccc !important; /* Para asegurar que la fecha de publicación se vea */
+.star-rating {
+    direction: rtl;
+    display: inline-block;
+    cursor: pointer;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    color: #ddd;
+    font-size: 1.5rem;
+    padding: 0 .1rem;
+    transition: color .2s ease, transform .2s ease;
+}
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+    color: #ffc107;
 }
 
-.comment-actions button {
-    margin-right: 5px;
-    font-size: 1rem;
+.comment-card small {
+    color: #ccc !important;
 }
 
 .comment-actions {
@@ -53,12 +111,18 @@ p {
     justify-content: flex-end;
 }
 
+.comment-actions button {
+    margin-right: 5px;
+    font-size: 1rem;
+}
+
 .no-auth-message {
-margin-top: 20px;  /* Espacio arriba */
-margin-bottom: 20px; /* Espacio abajo */
-padding: 10px; /* Espaciado interno */
-text-align: center; /* Centrar el texto */
-background-color: #222; /* Color de fondo opcional */
-color: white; /* Color del texto */
-border-radius: 5px; /* Bordes redondeados */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }

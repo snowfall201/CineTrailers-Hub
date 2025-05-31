@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById('detalle-pelicula').innerHTML = `<p class="text-white">${mensaje}</p>`;
         }
 
+        //aqui cargamos los datos de las peliculas y creamos el html donde mostraremos esos datos
         function cargarDetalles(id) {
             fetch(`api/detalles.php?id=${id}`)
                 .then(response => response.json())
@@ -43,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                         </div>`;
                     
+                        //comprobamos si el trailer esta disponible en youtube
                     if (data.trailer_url) {
                         document.getElementById('trailer-container').innerHTML = `
                             <iframe src="https://www.youtube.com/embed/${data.trailer_url}" 
@@ -57,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         
+        //optemos los datos de los comentarios por un json y los cargamos a la pagina
         function cargarComentarios(id) {
             fetch(`api/comentarios.php?id=${id}`)
                 .then(response => response.text())

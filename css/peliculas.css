@@ -1,72 +1,189 @@
+/* General */
 body {
-    background: linear-gradient(to bottom, #1a1a1a, #2b0f0f, #3e1818);
+    margin: 0;
+    padding: 0;
     color: #fff;
+    background: black;
+    font-family: Arial, sans-serif;
+    position: relative;
+    z-index: 0;
 }
 
+body::before {
+    content: none;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+    background-color: black;
+    z-index: 3;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to top, rgba(0,0,0,1), transparent);
+    pointer-events: none;
+    z-index: 4;
+}
+
+.hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85);
+    animation: fadeZoomIn 2.5s ease forwards;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    z-index: 3;
+}
+
+/* Video de fondo - fijo en toda la página */
+.background-video-section {
+    position: fixed;
+    top: 0;           
+    left: 0;
+    width: 100%;
+    height: 100vh;    
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+    background: none;
+}
+
+.background-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+    filter: brightness(0.6);
+}
+
+/* Contenedor principal */
+.container.mt-4 {
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+    position: relative;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.15);
+    padding: 20px 15px 40px 15px;
+    border-radius: 0 0 8px 8px;
+    color: white;
+}
+
+/* Navbar */
 .navbar {
     background: rgba(34, 34, 34, 0.8);
     backdrop-filter: blur(10px);
-    border-bottom: 2px solid rgba(255, 118, 117, 0.3);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    position: relative;
+}
+
+/* Movie cards */
+.movie-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+    position: relative;
+    z-index: 5;
 }
 
 .movie-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 15px;
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(3px);
+    padding: 20px;
     border-radius: 10px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0px 4px 10px rgba(255, 118, 117, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    flex: 1 1 22%; 
+    max-width: 22%;
+    position: relative;
+    z-index: 5;
 }
 
 .movie-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 8px 20px rgba(255, 118, 117, 0.5);
+    transform: scale(1.07);
+    box-shadow: 0 8px 25px rgba(255, 118, 117, 0.6);
 }
 
 .movie-card img {
     width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-bottom: 10px;
-    max-width: 180px; /* Imagen más pequeña */
+    margin-bottom: 15px;
 }
 
 .movie-card h5 {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .movie-card p {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
 }
 
-/* Responsividad: 5 tarjetas por fila */
-@media (min-width: 576px) {
+/* Responsive para tablets */
+@media (max-width: 768px) {
     .movie-card {
-        margin: 10px;
-        flex: 1 1 18%; /* 5 en una fila */
+        flex: 1 1 45%;
+        max-width: 45%;
     }
 }
 
-@media (min-width: 768px) {
+/* Responsive para móviles */
+@media (max-width: 480px) {
     .movie-card {
-        flex: 1 1 18%; /* 5 en una fila */
+        flex: 1 1 90%;
+        max-width: 90%;
     }
 }
 
-@media (min-width: 992px) {
-    .movie-card {
-        flex: 1 1 18%; /* 5 en una fila */
+/* Animación */
+@keyframes fadeZoomIn {
+    0% {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
     }
 }
 
-.movie-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Menos espacio entre las tarjetas */
-    justify-content: space-between;
-    margin-top: 30px;
+.shadow-drop-top {
+  animation: shadow-drop-top 3s linear both;
+}
+
+@keyframes shadow-drop-top {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  100% {
+    box-shadow: 0 -12px 20px -12px rgba(255, 255, 255, 0.55);
+  }
+}
+
+#buscador {
+    max-width: 400px;
+    margin: 0 auto 20px auto;
+    display: block;
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }

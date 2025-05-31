@@ -20,6 +20,13 @@ header("Access-Control-Allow-Headers: Content-Type");
 <body>
 <div id="navbar-container"></div>
 
+<section class="hero-section">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="assets/coche.webm" type="video/mp4">
+        </video>
+    </section>
+
+ 
     <div class="container mt-4">
         <div id="detalle-pelicula">Cargando detalles...</div>
     </div>

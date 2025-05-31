@@ -1,5 +1,15 @@
 {
-    "require": {
-        "google/apiclient": "^2.0"
-    }
+    "name": "leona/proyecto",
+    "autoload": {
+        "psr-4": {
+            "Leona\\Proyecto\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "snowfall201",
+            "email": "leonardosnowfall@gmail.com"
+        }
+    ],
+    "require": {}
 }

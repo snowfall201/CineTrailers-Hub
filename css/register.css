@@ -1,0 +1,78 @@
+/* Estilos generales */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: black;
+    overflow: hidden;
+}
+
+/* Video de fondo fijo */
+.hero-section {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Contenedor principal que va delante del video */
+.content-wrapper {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Fondo negro semitransparente para los bloques de texto y formulario */
+.block-bg {
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 25px 35px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    color: white;
+    text-align: center;
+}
+
+/* Para el formulario, igual que los bloques de texto */
+form.block-bg {
+    text-align: left;
+}
+
+/* Etiquetas blancas */
+label {
+    color: white;
+}
+
+/* Botón */
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #b02a37;
+    border-color: #b02a37;
+}
+
+/* reCAPTCHA más pequeño */
+.g-recaptcha {
+    transform: scale(0.9);
+    transform-origin: 0 0;
+    margin-bottom: 15px;
+}

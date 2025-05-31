@@ -28,7 +28,7 @@ CREATE TABLE comentario (
     usuario_id INT NOT NULL,
     puntuacion INT NOT NULL,
     comentario VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (pelicula_id) REFERENCES pelicula(id),
     FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );

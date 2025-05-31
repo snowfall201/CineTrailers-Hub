@@ -18,6 +18,18 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 });
 
+fetch('api/auth.php')
+    .then(res => res.json())
+    .then(data => {
+        if (data.loggedIn) {
+            document.getElementById("user-info").style.display = "block";
+            document.getElementById("user-name").textContent = data.name;
+            document.getElementById("logout-btn").style.display = "inline-block";
+            document.getElementById("login-btn").style.display = "none";
+            document.getElementById("register-btn").style.display = "none";
+        }
+    });
+
 async function verificarAutenticacion() {
     console.log("Verificando autenticación...");
 

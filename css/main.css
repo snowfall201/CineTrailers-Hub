@@ -57,3 +57,16 @@
         padding: 20px;
         font-size: 0.9em;
     }
+
+  .shadow-drop-center {
+  animation: shadow-drop-center 2s linear both;
+}
+
+@keyframes shadow-drop-center {
+  0% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+  100% {
+    box-shadow: 0 0 20px 0 rgba(255, 255, 255, 0.55);
+  }
+}

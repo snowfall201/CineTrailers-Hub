@@ -1,0 +1,12 @@
+/vendor/
+.env
+*.log
+composer.lock
+.DS_Store
+node_modules/
+.idea/
+api/google-login.php
+api/google-callback.php
+echo ".env" >> .gitignore
+*.mp4
+*.webm
